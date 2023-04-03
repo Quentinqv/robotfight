@@ -15,20 +15,21 @@
 
 class Fight {
   constructor(character1, character2, rounds = 10) {
-
-	if (character1.speed == character2.speed) {
-		// 50% chance to start with character1
-		if (Math.random() < 0.5) {
-			this.character1 = character1;
-			this.character2 = character2;
-		} else {
-			this.character1 = character2;
-			this.character2 = character1;
-		}
-	} else {
-		this.character1 = character1.speed > character2.speed ? character1 : character2;
-		this.character2 = character1.speed < character2.speed ? character1 : character2;
-	}
+    if (character1.speed == character2.speed) {
+      // 50% chance to start with character1
+      if (Math.random() < 0.5) {
+        this.character1 = character1;
+        this.character2 = character2;
+      } else {
+        this.character1 = character2;
+        this.character2 = character1;
+      }
+    } else {
+      this.character1 =
+        character1.speed > character2.speed ? character1 : character2;
+      this.character2 =
+        character1.speed < character2.speed ? character1 : character2;
+    }
 
     this.rounds = rounds > 10 ? 10 : rounds;
     this.round = 0;
@@ -47,15 +48,15 @@ class Fight {
    * const fight = new Fight(character1, character2, 3);
    * fight.start();
    */
-  start() {
-	while (this.round < this.rounds || !this.isEnded()) {
-		this.round++;
-		this.character1.attack(this.character2);
-		if (this.isEnded()) return this;
-		this.character2.attack(this.character1);
-	}
+  async start() {
+    while (this.round < this.rounds && !this.isEnded()) {
+      this.round++;
+      await this.character1.attack(this.character2);
+      if (this.isEnded()) return this;
+      await this.character2.attack(this.character1);
+    }
 
-	return this;
+    return this;
   }
 
   /**
@@ -68,17 +69,18 @@ class Fight {
    * const fight = new Fight(character1, character2, 3);
    * fight.start();
    * fight.isEnded();
-   * @private
    */
   isEnded() {
-	// If a fighter has no stamina, the fight is ended
-	if (this.character1.stamina <= 0 || this.character2.stamina <= 0) {
-		this.loser = this.character1.stamina <= 0 ? this.character1 : this.character2;
-		this.winner = this.character1.stamina <= 0 ? this.character2 : this.character1;
-		return true;
-	}
+    // If a fighter has no stamina, the fight is ended
+    if (this.character1.stamina <= 0 || this.character2.stamina <= 0) {
+      this.loser =
+        this.character1.stamina <= 0 ? this.character1 : this.character2;
+      this.winner =
+        this.character1.stamina <= 0 ? this.character2 : this.character1;
+      return true;
+    }
 
-	return false;
+    return false;
   }
 }
 
