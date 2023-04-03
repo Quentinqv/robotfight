@@ -10,14 +10,27 @@ const rl = readLine.createInterface({
   terminal: false,
 });
 
-const hippo = new Hippo("Hippo", 10, 30, 15);
-const challenger = new Challenger("Chelsey", 2, 30, 16);
-const fight = new Fight(hippo, challenger, 3);
 
-function main() {
+async function main() {
+  const nbRounds = await new Promise((resolve, reject) => {
+    rl.question("Number of rounds in the fight (Max 10) : ", resolve);
+  });
+
+  const name = await new Promise((resolve, reject) => {
+    rl.question("What's your Challenger name ? ", resolve);
+  });
+
+  const hippo = new Hippo("Hippo", 10, 30, 15);
+  const challenger = new Challenger(name, 2, 30, 16);
+  const fight = new Fight(hippo, challenger, nbRounds);
+
   fight.start();
-  console.log("Winner:", fight.winner.name);
-  console.log("Loser:", fight.loser.name);
+
+  if (fight.isEnded()) {
+    console.log("Fight ended after", fight.round, "rounds");
+    console.log("Winner:", fight.winner.name);
+    console.log("Loser:", fight.loser.name);
+  }
 }
 
 main();
