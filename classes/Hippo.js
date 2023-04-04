@@ -34,16 +34,20 @@ class Hippo extends Fighter {
   attack(opponent) {
     if (opponent instanceof Fighter) {
 
-      const random = Math.floor(Math.random() * 4);
+      const random = Math.floor(Math.random() * 4).toString();
       switch (random) {
-        case 0:
+        case "0":
           this.smash(opponent);
-        case 1:
+          break
+        case "1":
           this.uppercut(opponent);
-        case 2:
+          break
+        case "2":
           this.gazellePunch(opponent);
-        case 3:
+          break
+        case "3":
           this.dempseyRoll(opponent);
+          break
       }
 
       // 10% chance to KO the opponent
